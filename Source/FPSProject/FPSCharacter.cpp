@@ -38,6 +38,12 @@ AFPSCharacter::AFPSCharacter()
 
 	// The owning player doesn't see the regular (third-person) body mesh.
 	GetMesh()->SetOwnerNoSee(true);
+
+	// Retrieve the Warp Stack from the Game Instance
+	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (gameInstance) {
+		WarpStack = gameInstance->GetWarpStack();
+	}
 }
 
 // Called when the game starts or when spawned
@@ -140,5 +146,58 @@ if (ProjectileClass)
 		    }
 		}
 	}
+}
+
+void AFPSCharacter::PushWarp()
+{
+	TArray<FString> levelNames = TArray<FString>();
+	FString Arr[] = { L"RedMap", L"BlueMap", L"GreenMap" };
+	for (int i = 0; i < 3; i++)
+	{
+		FString level = Arr[i];
+		int isPresent = 0;
+		for (int j = 0; j < WarpStack.Num(); j++)
+		{
+			FString warpLevel = WarpStack[j]->levelName;
+			if (warpLevel.Equals(level))
+			{
+				isPresent = 1;
+				break;
+			}
+		}
+		if (isPresent == 0)
+		{
+			levelNames.Add(level);
+		}
+	}
+	if (levelNames.Num() == 0)
+	{
+		return;
+	}
+	int iRandomLevel = FMath::RandRange(0, levelNames.Num()-1);
+	FName nextLevelName = FName(*levelNames[iRandomLevel]);
+	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	gameInstance->PushWarpStack(levelNames[iRandomLevel]);
+	WarpStack = gameInstance->GetWarpStack();
+	UGameplayStatics::OpenLevel(GetWorld(), nextLevelName);
+}
+
+void AFPSCharacter::PopWarp()
+{
+	if (WarpStack.Num() <= 1)
+	{
+		return;
+	}
+	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	gameInstance->PopWarpStack();
+	WarpStack = gameInstance->GetWarpStack();
+	UWarpSaveGame* nextLevel = WarpStack[WarpStack.Num() - 1];
+	FName nextLevelName = FName(*nextLevel->levelName);
+	UGameplayStatics::OpenLevel(GetWorld(), nextLevelName);
+}
+
+TArray<class UWarpSaveGame*> AFPSCharacter::GetWarpStack()
+{
+	return WarpStack;
 }
 

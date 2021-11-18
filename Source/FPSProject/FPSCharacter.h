@@ -6,7 +6,10 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "FPSProjectile.h"
+#include "WarpSaveGame.h"
+#include "MainGameInstance.h"
 #include "FPSCharacter.generated.h"
 
 UCLASS()
@@ -53,6 +56,18 @@ void StopJump();
 UFUNCTION()
 void Fire();
 
+// Function that pushes to the warp stack.
+UFUNCTION(BlueprintCallable, Category="Warp")
+void PushWarp();
+
+// Function that pops from the warp stack.
+UFUNCTION(BlueprintCallable, Category="Warp")
+void PopWarp();
+
+// Function that pops from the warp stack.
+UFUNCTION()
+TArray<class UWarpSaveGame*> GetWarpStack();
+
 // FPS camera
 UPROPERTY(VisibleAnywhere)
 UCameraComponent* FPSCameraComponent;
@@ -65,4 +80,6 @@ USkeletalMeshComponent* FPSMesh;
 UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 FVector MuzzleOffset;
 
+// Warp Stack
+TArray<class UWarpSaveGame*> WarpStack;
 };
