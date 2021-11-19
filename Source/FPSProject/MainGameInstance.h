@@ -23,7 +23,7 @@ public:
 
 	// Push to the Warp Stack
 	UFUNCTION(BlueprintCallable, Category="Update State")
-	void PushWarpStack(FString nextLevel);
+	void PushWarpStack(FString nextLevel, FVector playerPosition);
 	
 	// Pop the Warp Stack
 	UFUNCTION(BlueprintCallable, Category="Update State")

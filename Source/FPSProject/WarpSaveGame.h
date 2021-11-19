@@ -22,5 +22,14 @@ public:
 
 	UFUNCTION()
 	void SetLevelName(FString newLevel);
+
+	UPROPERTY(VisibleAnywhere)
+	int isInit = 1;
+
+	UPROPERTY(VisibleAnywhere)
+	FVector playerPosition;
+
+	UFUNCTION()
+	void SetPlayerPosition(FVector newPosition);
 	
 };

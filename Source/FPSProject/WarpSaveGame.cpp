@@ -11,3 +11,9 @@ void UWarpSaveGame::SetLevelName(FString newLevel)
 {
     levelName = newLevel;
 }
+
+void UWarpSaveGame::SetPlayerPosition(FVector newPosition)
+{
+    playerPosition = newPosition;
+}
+

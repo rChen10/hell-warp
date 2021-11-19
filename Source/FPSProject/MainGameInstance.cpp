@@ -9,8 +9,16 @@ TArray<class UWarpSaveGame*> UMainGameInstance::GetWarpStack()
 }
 
 
-void UMainGameInstance::PushWarpStack(FString nextLevel)
+void UMainGameInstance::PushWarpStack(FString nextLevel, FVector playerPosition)
 {
+    // update the current warp
+    if(WarpStack.Num() > 0)
+    {
+	    UWarpSaveGame* currentWarp = WarpStack[WarpStack.Num()-1];
+	    currentWarp->SetPlayerPosition(playerPosition);
+        currentWarp->isInit = 0;
+    }
+    // create the new warp
 	UWarpSaveGame* newWarp = NewObject<UWarpSaveGame>((UObject*) this, UWarpSaveGame::StaticClass());
 	newWarp->SetLevelName(nextLevel);
     WarpStack.Add(newWarp);

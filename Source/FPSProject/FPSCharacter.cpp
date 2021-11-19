@@ -38,12 +38,6 @@ AFPSCharacter::AFPSCharacter()
 
 	// The owning player doesn't see the regular (third-person) body mesh.
 	GetMesh()->SetOwnerNoSee(true);
-
-	// Retrieve the Warp Stack from the Game Instance
-	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if (gameInstance) {
-		WarpStack = gameInstance->GetWarpStack();
-	}
 }
 
 // Called when the game starts or when spawned
@@ -56,6 +50,20 @@ void AFPSCharacter::BeginPlay()
 	// Display a debug message for five seconds. 
 	// The -1 "Key" value argument prevents the message from being updated or refreshed.
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("We are using FPSCharacter."));
+
+	// Retrieve the Warp Stack from the Game Instance
+	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (gameInstance) {
+		WarpStack = gameInstance->GetWarpStack();
+		if (WarpStack.Num() > 0)
+		{
+			UWarpSaveGame* top = WarpStack[WarpStack.Num() - 1];
+			if (top->isInit == 0)
+			{
+				SetActorLocation(top->playerPosition);
+			}
+		}
+	}
 }
 
 // Called every frame
@@ -176,8 +184,9 @@ void AFPSCharacter::PushWarp()
 	}
 	int iRandomLevel = FMath::RandRange(0, levelNames.Num()-1);
 	FName nextLevelName = FName(*levelNames[iRandomLevel]);
+	FVector position = GetActorLocation();
 	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	gameInstance->PushWarpStack(levelNames[iRandomLevel]);
+	gameInstance->PushWarpStack(levelNames[iRandomLevel], position);
 	WarpStack = gameInstance->GetWarpStack();
 	UGameplayStatics::OpenLevel(GetWorld(), nextLevelName);
 }
