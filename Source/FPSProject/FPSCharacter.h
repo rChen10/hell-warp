@@ -52,10 +52,6 @@ void StartJump();
 UFUNCTION()
 void StopJump();
 
-// Function that fires projectiles.
-UFUNCTION()
-void Fire();
-
 // Function that pushes to the warp stack.
 UFUNCTION(BlueprintCallable, Category="Warp")
 void PushWarp();
@@ -69,7 +65,7 @@ UFUNCTION()
 TArray<class UWarpSaveGame*> GetWarpStack();
 
 // FPS camera
-UPROPERTY(VisibleAnywhere)
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera)
 UCameraComponent* FPSCameraComponent;
 
 // First-person mesh (arms), visible only to the owning player.
