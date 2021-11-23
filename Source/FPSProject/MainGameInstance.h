@@ -17,6 +17,9 @@ class FPSPROJECT_API UMainGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 public:
+
+	void Init() override;
+
 	// Get the Warp Stack
 	UFUNCTION(BlueprintCallable, Category="Update State")
 	TArray<class UWarpSaveGame*> GetWarpStack();

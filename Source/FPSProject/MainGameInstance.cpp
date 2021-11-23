@@ -3,6 +3,15 @@
 
 #include "MainGameInstance.h"
 
+void UMainGameInstance::Init()
+{
+    Super::Init();
+    // Init with Black Level
+	UWarpSaveGame* newWarp = NewObject<UWarpSaveGame>((UObject*) this, UWarpSaveGame::StaticClass());
+	newWarp->SetLevelName(L"BlackMap");
+    WarpStack.Add(newWarp);
+}
+
 TArray<class UWarpSaveGame*> UMainGameInstance::GetWarpStack()
 {
     return WarpStack;
