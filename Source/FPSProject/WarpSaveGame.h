@@ -31,6 +31,12 @@ struct FPlayerStats
 
 	UPROPERTY()
 	int MaxAmmo;
+
+	UPROPERTY()
+	bool HasSMG;
+
+	UPROPERTY()
+	bool HasShotgun;
 };
 
 UCLASS()

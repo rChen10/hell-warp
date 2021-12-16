@@ -74,6 +74,7 @@ void AFPSCharacter::BeginPlay()
 			Health = playerStats.Health; MaxHealth = playerStats.MaxHealth;
 			Damage = playerStats.Damage; Speed = playerStats.Speed;
 			CurrentAmmo = playerStats.CurrentAmmo; MaxAmmo = playerStats.MaxAmmo;
+			HasSMG = playerStats.HasSMG; HasShotgun = playerStats.HasShotgun;
 		}
 	}
 }
@@ -163,6 +164,7 @@ void AFPSCharacter::PushWarp()
 	statsStore.Health = Health; statsStore.MaxHealth = MaxHealth;	
 	statsStore.Damage = Damage; statsStore.Speed = Speed;
 	statsStore.CurrentAmmo = CurrentAmmo; statsStore.MaxAmmo = MaxAmmo;
+    statsStore.HasSMG = HasSMG; statsStore.HasShotgun = HasShotgun;
 
 	gameInstance->PushWarpStack(levelNames[iRandomLevel], position, statsStore);
 	WarpStack = gameInstance->GetWarpStack();
@@ -183,6 +185,7 @@ void AFPSCharacter::PopWarp()
 	statsStore.Health = Health; statsStore.MaxHealth = MaxHealth;	
 	statsStore.Damage = Damage; statsStore.Speed = Speed;
 	statsStore.CurrentAmmo = CurrentAmmo; statsStore.MaxAmmo = MaxAmmo;
+    statsStore.HasSMG = HasSMG; statsStore.HasShotgun = HasShotgun;
 
 	gameInstance->StatsWarpStack(statsStore);
 

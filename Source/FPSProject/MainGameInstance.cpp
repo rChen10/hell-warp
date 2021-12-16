@@ -14,6 +14,7 @@ void UMainGameInstance::Init()
 	statsStore.Health = 100; statsStore.MaxHealth = 100;	
 	statsStore.Damage = 1; statsStore.Speed = 1;
 	statsStore.CurrentAmmo = 200; statsStore.MaxAmmo = 200;
+    statsStore.HasSMG = false; statsStore.HasShotgun = false;
     newWarp->stats = statsStore;
 
     WarpStack.Add(newWarp);

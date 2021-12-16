@@ -101,4 +101,10 @@ int CurrentAmmo;
 
 UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
 int MaxAmmo;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+bool HasSMG;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+bool HasShotgun;
 };
