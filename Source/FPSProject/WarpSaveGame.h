@@ -17,7 +17,7 @@ class FPSPROJECT_API UWarpSaveGame : public USaveGame
 public:
 	UWarpSaveGame();
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FString levelName;
 
 	UFUNCTION()

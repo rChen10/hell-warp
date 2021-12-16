@@ -61,7 +61,7 @@ UFUNCTION(BlueprintCallable, Category="Warp")
 void PopWarp();
 
 // Function that pops from the warp stack.
-UFUNCTION()
+UFUNCTION(BlueprintCallable, Category="Warp")
 TArray<class UWarpSaveGame*> GetWarpStack();
 
 // FPS camera
