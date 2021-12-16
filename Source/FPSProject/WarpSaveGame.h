@@ -9,6 +9,30 @@
 /**
  * 
  */
+USTRUCT(BlueprintType)
+struct FPlayerStats
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	float Health;
+
+	UPROPERTY()
+	float MaxHealth;
+
+	UPROPERTY()
+	float Damage;
+
+	UPROPERTY()
+	float Speed;
+
+	UPROPERTY()
+	int CurrentAmmo;
+
+	UPROPERTY()
+	int MaxAmmo;
+};
+
 UCLASS()
 class FPSPROJECT_API UWarpSaveGame : public USaveGame
 {
@@ -32,4 +56,10 @@ public:
 	UFUNCTION()
 	void SetPlayerPosition(FVector newPosition);
 	
+
+	UPROPERTY(VisibleAnywhere)
+	FPlayerStats stats;
+
+	UFUNCTION()
+	void SetPlayerStats(FPlayerStats newStats);
 };

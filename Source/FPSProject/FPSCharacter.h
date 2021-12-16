@@ -60,6 +60,10 @@ void PushWarp();
 UFUNCTION(BlueprintCallable, Category="Warp")
 void PopWarp();
 
+// Function that warps after dying.
+UFUNCTION(BlueprintCallable, Category="Warp")
+bool DeathWarp();
+
 // Function that pops from the warp stack.
 UFUNCTION(BlueprintCallable, Category="Warp")
 TArray<class UWarpSaveGame*> GetWarpStack();
@@ -78,4 +82,23 @@ FVector MuzzleOffset;
 
 // Warp Stack
 TArray<class UWarpSaveGame*> WarpStack;
+
+// Stats
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+float Health;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+float MaxHealth;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+float Damage;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+float Speed;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+int CurrentAmmo;
+
+UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+int MaxAmmo;
 };

@@ -26,11 +26,15 @@ public:
 
 	// Push to the Warp Stack
 	UFUNCTION(BlueprintCallable, Category="Update State")
-	void PushWarpStack(FString nextLevel, FVector playerPosition);
+	void PushWarpStack(FString nextLevel, FVector playerPosition, FPlayerStats playerStats);
 	
 	// Pop the Warp Stack
 	UFUNCTION(BlueprintCallable, Category="Update State")
 	UWarpSaveGame* PopWarpStack();
+
+	// Save Stats
+	UFUNCTION(BlueprintCallable, Category="Update State")
+	void StatsWarpStack(FPlayerStats newStats);
 
 	// Warp Stack
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Warp")

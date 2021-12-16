@@ -38,6 +38,14 @@ AFPSCharacter::AFPSCharacter()
 
 	// The owning player doesn't see the regular (third-person) body mesh.
 	GetMesh()->SetOwnerNoSee(true);
+
+	// Default Stats
+	Health = 100;
+	MaxHealth = 100;
+	Damage = 1;
+	Speed = 1;
+	CurrentAmmo = 100;
+	MaxAmmo = 200;
 }
 
 // Called when the game starts or when spawned
@@ -62,6 +70,10 @@ void AFPSCharacter::BeginPlay()
 			{
 				SetActorLocation(top->playerPosition);
 			}
+			FPlayerStats playerStats = top->stats;
+			Health = playerStats.Health; MaxHealth = playerStats.MaxHealth;
+			Damage = playerStats.Damage; Speed = playerStats.Speed;
+			CurrentAmmo = playerStats.CurrentAmmo; MaxAmmo = playerStats.MaxAmmo;
 		}
 	}
 }
@@ -145,7 +157,14 @@ void AFPSCharacter::PushWarp()
 	FName nextLevelName = FName(*levelNames[iRandomLevel]);
 	FVector position = GetActorLocation();
 	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	gameInstance->PushWarpStack(levelNames[iRandomLevel], position);
+
+	// Create Stats Storage
+	FPlayerStats statsStore;
+	statsStore.Health = Health; statsStore.MaxHealth = MaxHealth;	
+	statsStore.Damage = Damage; statsStore.Speed = Speed;
+	statsStore.CurrentAmmo = CurrentAmmo; statsStore.MaxAmmo = MaxAmmo;
+
+	gameInstance->PushWarpStack(levelNames[iRandomLevel], position, statsStore);
 	WarpStack = gameInstance->GetWarpStack();
 	UGameplayStatics::OpenLevel(GetWorld(), nextLevelName);
 }
@@ -158,10 +177,36 @@ void AFPSCharacter::PopWarp()
 	}
 	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	gameInstance->PopWarpStack();
+
+	// Create Stats Storage
+	FPlayerStats statsStore;
+	statsStore.Health = Health; statsStore.MaxHealth = MaxHealth;	
+	statsStore.Damage = Damage; statsStore.Speed = Speed;
+	statsStore.CurrentAmmo = CurrentAmmo; statsStore.MaxAmmo = MaxAmmo;
+
+	gameInstance->StatsWarpStack(statsStore);
+
 	WarpStack = gameInstance->GetWarpStack();
 	UWarpSaveGame* nextLevel = WarpStack[WarpStack.Num() - 1];
 	FName nextLevelName = FName(*nextLevel->levelName);
 	UGameplayStatics::OpenLevel(GetWorld(), nextLevelName);
+}
+
+bool AFPSCharacter::DeathWarp()
+{
+	if (WarpStack.Num() <= 1)
+	{
+		// You Lose
+		return true;
+	}
+	UMainGameInstance *gameInstance = Cast<UMainGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	gameInstance->PopWarpStack();
+
+	WarpStack = gameInstance->GetWarpStack();
+	UWarpSaveGame* nextLevel = WarpStack[WarpStack.Num() - 1];
+	FName nextLevelName = FName(*nextLevel->levelName);
+	UGameplayStatics::OpenLevel(GetWorld(), nextLevelName);
+	return false;
 }
 
 TArray<class UWarpSaveGame*> AFPSCharacter::GetWarpStack()

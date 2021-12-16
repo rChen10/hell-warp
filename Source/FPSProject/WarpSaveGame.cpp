@@ -17,3 +17,8 @@ void UWarpSaveGame::SetPlayerPosition(FVector newPosition)
     playerPosition = newPosition;
 }
 
+void UWarpSaveGame::SetPlayerStats(FPlayerStats newStats)
+{
+    stats = newStats;
+}
+
